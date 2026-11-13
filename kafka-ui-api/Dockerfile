@@ -1,11 +1,13 @@
-FROM azul/zulu-openjdk-alpine:21-jre-headless
+FROM amazoncorretto:21
 
-RUN apk add --no-cache \
-    # snappy codec
-    gcompat \
+# glibc-based image: the gcompat shim needed by the snappy codec on Alpine is no longer required
+RUN yum install -y \
     # configuring timezones
-    tzdata
-RUN addgroup -S kafkaui && adduser -S kafkaui -G kafkaui
+    tzdata \
+    # groupadd/useradd
+    shadow-utils \
+    && yum clean all
+RUN groupadd -r kafkaui && useradd -r -g kafkaui kafkaui
 
 # creating folder for dynamic config usage (certificates uploads, etc)
 RUN mkdir /etc/kafkaui/
