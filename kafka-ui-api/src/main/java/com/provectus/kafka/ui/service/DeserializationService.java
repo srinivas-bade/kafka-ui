@@ -10,13 +10,13 @@ import com.provectus.kafka.ui.serdes.ConsumerRecordDeserializer;
 import com.provectus.kafka.ui.serdes.ProducerRecordCreator;
 import com.provectus.kafka.ui.serdes.SerdeInstance;
 import com.provectus.kafka.ui.serdes.SerdesInitializer;
+import jakarta.validation.ValidationException;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nullable;
-import javax.validation.ValidationException;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
