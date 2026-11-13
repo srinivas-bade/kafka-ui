@@ -1,11 +1,13 @@
 {
 	"name": "Java",
 
-	"image": "mcr.microsoft.com/devcontainers/java:0-17",
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
-			"version": "none",
+			"version": "21",
+			// Amazon Corretto (SDKMAN distribution identifier "amzn")
+			"jdkDistro": "amzn",
 			"installMaven": "true",
 			"installGradle": "false"
 		},
