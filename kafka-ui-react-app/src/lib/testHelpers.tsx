@@ -5,7 +5,7 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import fetchMock from 'fetch-mock';
+import { FetchMock } from 'fetch-mock';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'theme/theme';
@@ -50,11 +50,11 @@ interface WithRouteProps {
 }
 
 export const expectQueryWorks = async (
-  mock: fetchMock.FetchMockStatic,
+  mock: FetchMock,
   result: { current: UseQueryResult<unknown, unknown> }
 ) => {
   await waitFor(() => expect(result.current.isFetched).toBeTruthy());
-  expect(mock.calls()).toHaveLength(1);
+  expect(mock.callHistory.calls()).toHaveLength(1);
   expect(result.current.data).toBeDefined();
 };
 

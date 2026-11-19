@@ -211,7 +211,7 @@ describe('Details', () => {
       const confirmBtn = screen.getByRole('button', { name: /Confirm/i });
 
       await waitFor(() => userEvent.click(confirmBtn));
-      expect(mockRecreate).toBeCalledTimes(1);
+      expect(mockRecreate).toHaveBeenCalledTimes(1);
     });
 
     it('closes popup confirmation window after click on Cancel button', async () => {

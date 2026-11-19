@@ -46,7 +46,7 @@ describe('Schemas', () => {
   beforeEach(() => {
     fetchMock.getOnce(`/api/clusters/${clusterName}/schemas`, [schemaVersion]);
   });
-  afterEach(() => fetchMock.restore());
+  afterEach(() => fetchMock.removeRoutes().clearHistory());
   it('renders List', async () => {
     renderComponent(clusterSchemasPath(clusterName));
     await waitFor(() =>

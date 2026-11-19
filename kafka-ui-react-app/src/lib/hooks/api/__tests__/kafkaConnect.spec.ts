@@ -24,7 +24,7 @@ const connectorProps = {
 };
 
 describe('kafkaConnect hooks', () => {
-  beforeEach(() => fetchMock.restore());
+  beforeEach(() => fetchMock.removeRoutes().clearHistory());
   describe('useConnects', () => {
     it('returns the correct data', async () => {
       const mock = fetchMock.getOnce(connectsPath, connects);
@@ -93,7 +93,7 @@ describe('kafkaConnect hooks', () => {
         );
         await act(() => result.current.mutateAsync(action));
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-        expect(mock.calls()).toHaveLength(1);
+        expect(mock.callHistory.calls()).toHaveLength(1);
       });
     });
     describe('useRestartConnectorTask', () => {
@@ -107,7 +107,7 @@ describe('kafkaConnect hooks', () => {
         );
         await act(() => result.current.mutateAsync(taskId));
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-        expect(mock.calls()).toHaveLength(1);
+        expect(mock.callHistory.calls()).toHaveLength(1);
       });
     });
     describe('useUpdateConnectorConfig', () => {
@@ -121,7 +121,7 @@ describe('kafkaConnect hooks', () => {
           await result.current.mutateAsync({ config: 1 });
         });
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-        expect(mock.calls()).toHaveLength(1);
+        expect(mock.callHistory.calls()).toHaveLength(1);
       });
     });
     describe('useCreateConnector', () => {
@@ -141,7 +141,7 @@ describe('kafkaConnect hooks', () => {
           });
         });
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-        expect(mock.calls()).toHaveLength(1);
+        expect(mock.callHistory.calls()).toHaveLength(1);
       });
     });
     describe('useDeleteConnector', () => {
@@ -155,7 +155,7 @@ describe('kafkaConnect hooks', () => {
           await result.current.mutateAsync();
         });
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-        expect(mock.calls()).toHaveLength(1);
+        expect(mock.callHistory.calls()).toHaveLength(1);
       });
     });
   });

@@ -49,7 +49,7 @@ const renderComponent = (
 
 describe('List', () => {
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
   });
 
   describe('fetch error', () => {
@@ -62,8 +62,8 @@ describe('List', () => {
       await act(() => {
         renderComponent();
       });
-      expect(fetchSchemasMock.called()).toBeTruthy();
-      expect(fetchCompabilityMock.called()).toBeTruthy();
+      expect(fetchSchemasMock.callHistory.called()).toBeTruthy();
+      expect(fetchCompabilityMock.callHistory.called()).toBeTruthy();
       expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
   });
@@ -82,8 +82,8 @@ describe('List', () => {
         await act(() => {
           renderComponent();
         });
-        expect(fetchSchemasMock.called()).toBeTruthy();
-        expect(fetchCompabilityMock.called()).toBeTruthy();
+        expect(fetchSchemasMock.callHistory.called()).toBeTruthy();
+        expect(fetchCompabilityMock.callHistory.called()).toBeTruthy();
       });
       it('renders empty table', () => {
         expect(screen.getByText('No schemas found')).toBeInTheDocument();
@@ -102,8 +102,8 @@ describe('List', () => {
         await act(() => {
           renderComponent(schemasFulfilledState);
         });
-        expect(fetchSchemasMock.called()).toBeTruthy();
-        expect(fetchCompabilityMock.called()).toBeTruthy();
+        expect(fetchSchemasMock.callHistory.called()).toBeTruthy();
+        expect(fetchCompabilityMock.callHistory.called()).toBeTruthy();
       });
       it('renders list', () => {
         expect(screen.getByText(schemaVersion1.subject)).toBeInTheDocument();
@@ -136,7 +136,7 @@ describe('List', () => {
             isReadOnly: true,
           });
         });
-        expect(fetchSchemasMock.called()).toBeTruthy();
+        expect(fetchSchemasMock.callHistory.called()).toBeTruthy();
       });
       it('does not render Create Schema button', () => {
         expect(screen.queryByText('Create Schema')).not.toBeInTheDocument();
