@@ -38,19 +38,21 @@ describe('GlobalSchemaSelector', () => {
 
   beforeEach(async () => {
     const fetchGlobalCompatibilityLevelMock = fetchMock.getOnce(
-      `api/clusters/${clusterName}/schemas/compatibility`,
+      `/api/clusters/${clusterName}/schemas/compatibility`,
       { compatibility: CompatibilityLevelCompatibilityEnum.FULL }
     );
     await act(() => {
       renderComponent();
     });
     await waitFor(() =>
-      expect(fetchGlobalCompatibilityLevelMock.called()).toBeTruthy()
+      expect(
+        fetchGlobalCompatibilityLevelMock.callHistory.called()
+      ).toBeTruthy()
     );
   });
 
   afterEach(() => {
-    fetchMock.reset();
+    fetchMock.removeRoutes().clearHistory();
   });
 
   it('renders with initial prop', () => {
@@ -73,7 +75,7 @@ describe('GlobalSchemaSelector', () => {
   it('sets new schema when confirm is clicked', async () => {
     await selectForwardOption();
     const putNewCompatibilityMock = fetchMock.putOnce(
-      `api/clusters/${clusterName}/schemas/compatibility`,
+      `/api/clusters/${clusterName}/schemas/compatibility`,
       200,
       {
         body: {
@@ -82,14 +84,18 @@ describe('GlobalSchemaSelector', () => {
       }
     );
     const getSchemasMock = fetchMock.getOnce(
-      `api/clusters/${clusterName}/schemas?page=1&perPage=25`,
+      `/api/clusters/${clusterName}/schemas?page=1&perPage=25`,
       200
     );
     await waitFor(() => {
       userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
     });
-    await waitFor(() => expect(putNewCompatibilityMock.called()).toBeTruthy());
-    await waitFor(() => expect(getSchemasMock.called()).toBeTruthy());
+    await waitFor(() =>
+      expect(putNewCompatibilityMock.callHistory.called()).toBeTruthy()
+    );
+    await waitFor(() =>
+      expect(getSchemasMock.callHistory.called()).toBeTruthy()
+    );
 
     await waitFor(() =>
       expect(screen.queryByText('Confirm the action')).not.toBeInTheDocument()

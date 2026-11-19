@@ -4,13 +4,14 @@ import { ClusterBrokerParam } from 'lib/paths';
 import { useBrokerLogDirs } from 'lib/hooks/api/brokers';
 import Table from 'components/common/NewTable';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { BrokersLogdirs } from 'generated-sources';
 
 const BrokerLogdir: React.FC = () => {
   const { clusterName, brokerId } = useAppParams<ClusterBrokerParam>();
   const { data } = useBrokerLogDirs(clusterName, Number(brokerId));
 
-  const columns = React.useMemo<ColumnDef<BrokersLogdirs>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, BrokersLogdirs>[]>(
     () => [
       { header: 'Name', accessorKey: 'name' },
       { header: 'Error', accessorKey: 'error' },

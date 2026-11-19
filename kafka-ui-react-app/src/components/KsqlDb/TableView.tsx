@@ -2,6 +2,7 @@ import React from 'react';
 import { KsqlStreamDescription, KsqlTableDescription } from 'generated-sources';
 import Table from 'components/common/NewTable';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 
 interface TableViewProps {
   fetching: boolean;
@@ -10,7 +11,7 @@ interface TableViewProps {
 
 const TableView: React.FC<TableViewProps> = ({ fetching, rows }) => {
   const columns = React.useMemo<
-    ColumnDef<KsqlTableDescription | KsqlStreamDescription>[]
+    ColumnDef<TableFeatures, KsqlTableDescription | KsqlStreamDescription>[]
   >(
     () => [
       { header: 'Name', accessorKey: 'name' },

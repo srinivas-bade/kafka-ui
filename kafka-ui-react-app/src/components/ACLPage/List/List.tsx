@@ -1,5 +1,6 @@
 import React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { useTheme } from 'styled-components';
 import PageHeading from 'components/common/PageHeading/PageHeading';
 import Table from 'components/common/NewTable';
@@ -33,7 +34,7 @@ const ACList: React.FC = () => {
     }
   };
 
-  const columns = React.useMemo<ColumnDef<KafkaAcl>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, KafkaAcl>[]>(
     () => [
       {
         header: 'Principal',

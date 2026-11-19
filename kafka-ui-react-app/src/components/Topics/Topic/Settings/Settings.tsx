@@ -4,11 +4,12 @@ import { RouteParamsClusterTopic } from 'lib/paths';
 import useAppParams from 'lib/hooks/useAppParams';
 import { useTopicConfig } from 'lib/hooks/api/topics';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { TopicConfig } from 'generated-sources';
 
 import * as S from './Settings.styled';
 
-const ValueCell: React.FC<CellContext<TopicConfig, unknown>> = ({
+const ValueCell: React.FC<CellContext<TableFeatures, TopicConfig, unknown>> = ({
   row,
   renderValue,
 }) => {
@@ -21,10 +22,9 @@ const ValueCell: React.FC<CellContext<TopicConfig, unknown>> = ({
   );
 };
 
-const DefaultValueCell: React.FC<CellContext<TopicConfig, unknown>> = ({
-  row,
-  getValue,
-}) => {
+const DefaultValueCell: React.FC<
+  CellContext<TableFeatures, TopicConfig, unknown>
+> = ({ row, getValue }) => {
   const defaultValue = getValue<TopicConfig['defaultValue']>();
   const { value } = row.original;
   const hasCustomValue = !!defaultValue && value !== defaultValue;
@@ -35,7 +35,7 @@ const Settings: React.FC = () => {
   const props = useAppParams<RouteParamsClusterTopic>();
   const { data = [] } = useTopicConfig(props);
 
-  const columns = React.useMemo<ColumnDef<TopicConfig>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, TopicConfig>[]>(
     () => [
       {
         header: 'Key',

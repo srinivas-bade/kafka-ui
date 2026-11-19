@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAppParams from 'lib/hooks/useAppParams';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm, Resolver } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -43,7 +43,7 @@ const New: React.FC = () => {
 
   const methods = useForm<FormValues>({
     mode: 'all',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as unknown as Resolver<FormValues>,
     defaultValues: {
       connectName: get(connects, '0.name', ''),
       name: '',

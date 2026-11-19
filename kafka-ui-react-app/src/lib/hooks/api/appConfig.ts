@@ -1,28 +1,35 @@
 import { appConfigApiClient as api } from 'lib/api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { ApplicationConfigPropertiesKafkaClusters } from 'generated-sources';
 import { QUERY_REFETCH_OFF_OPTIONS } from 'lib/constants';
 
 export function useAppInfo() {
-  return useQuery(
-    ['app', 'info'],
-    () => api.getApplicationInfo(),
-    QUERY_REFETCH_OFF_OPTIONS
-  );
+  return useSuspenseQuery({
+    queryKey: ['app', 'info'],
+    queryFn: () => api.getApplicationInfo(),
+    ...QUERY_REFETCH_OFF_OPTIONS,
+  });
 }
 
 export function useAppConfig() {
-  return useQuery(['app', 'config'], () => api.getCurrentConfig());
+  return useSuspenseQuery({
+    queryKey: ['app', 'config'],
+    queryFn: () => api.getCurrentConfig(),
+  });
 }
 
 export function useUpdateAppConfig({ initialName }: { initialName?: string }) {
   const client = useQueryClient();
-  return useMutation(
-    async (cluster: ApplicationConfigPropertiesKafkaClusters) => {
+  return useMutation({
+    mutationFn: async (cluster: ApplicationConfigPropertiesKafkaClusters) => {
       const existingConfig = await api.getCurrentConfig();
       const existingClusters = existingConfig.properties?.kafka?.clusters || [];
 
-      let clusters: ApplicationConfigPropertiesKafkaClusters[] = [];
+      let clusters: ApplicationConfigPropertiesKafkaClusters[];
 
       if (existingClusters.length > 0) {
         if (!initialName) {
@@ -45,25 +52,25 @@ export function useUpdateAppConfig({ initialName }: { initialName?: string }) {
       };
       return api.restartWithConfig({ restartRequest: { config } });
     },
-    {
-      onSuccess: () => client.invalidateQueries(['app', 'config']),
-    }
-  );
+    onSuccess: () => client.invalidateQueries({ queryKey: ['app', 'config'] }),
+  });
 }
 
 export function useAppConfigFilesUpload() {
-  return useMutation((payload: FormData) =>
-    fetch('/api/config/relatedfiles', {
-      method: 'POST',
-      body: payload,
-    }).then((res) => res.json())
-  );
+  return useMutation({
+    mutationFn: (payload: FormData) =>
+      fetch('/api/config/relatedfiles', {
+        method: 'POST',
+        body: payload,
+      }).then((res) => res.json()),
+  });
 }
 
 export function useValidateAppConfig() {
-  return useMutation((config: ApplicationConfigPropertiesKafkaClusters) =>
-    api.validateConfig({
-      applicationConfig: { properties: { kafka: { clusters: [config] } } },
-    })
-  );
+  return useMutation({
+    mutationFn: (config: ApplicationConfigPropertiesKafkaClusters) =>
+      api.validateConfig({
+        applicationConfig: { properties: { kafka: { clusters: [config] } } },
+      }),
+  });
 }

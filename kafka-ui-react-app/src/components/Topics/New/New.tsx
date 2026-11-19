@@ -1,6 +1,6 @@
 import React from 'react';
 import { TopicFormData } from 'redux/interfaces';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, Resolver } from 'react-hook-form';
 import { ClusterNameRoute, clusterTopicsPath } from 'lib/paths';
 import TopicForm from 'components/Topics/shared/Form/TopicForm';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,7 +22,9 @@ const New: React.FC = () => {
   const { clusterName } = useAppParams<ClusterNameRoute>();
   const methods = useForm<TopicFormData>({
     mode: 'onChange',
-    resolver: yupResolver(topicFormValidationSchema),
+    resolver: yupResolver(
+      topicFormValidationSchema
+    ) as unknown as Resolver<TopicFormData>,
   });
 
   const createTopic = useCreateTopic(clusterName);
@@ -61,7 +63,7 @@ const New: React.FC = () => {
           partitionCount={Number(partitionCount)}
           replicationFactor={Number(replicationFactor)}
           inSyncReplicas={Number(inSyncReplicas)}
-          isSubmitting={createTopic.isLoading}
+          isSubmitting={createTopic.isPending}
           onSubmit={methods.handleSubmit(onSubmit)}
         />
       </FormProvider>

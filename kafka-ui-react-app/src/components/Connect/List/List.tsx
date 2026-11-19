@@ -5,6 +5,7 @@ import Table, { TagCell } from 'components/common/NewTable';
 import { FullConnectorInfo } from 'generated-sources';
 import { useConnectors } from 'lib/hooks/api/kafkaConnect';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import ActionsCell from './ActionsCell';
@@ -20,7 +21,7 @@ const List: React.FC = () => {
     searchParams.get('q') || ''
   );
 
-  const columns = React.useMemo<ColumnDef<FullConnectorInfo>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, FullConnectorInfo>[]>(
     () => [
       { header: 'Name', accessorKey: 'name' },
       { header: 'Connect', accessorKey: 'connect' },

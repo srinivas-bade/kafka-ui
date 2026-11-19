@@ -1,7 +1,7 @@
 import Input from 'components/common/Input/Input';
 import Select from 'components/common/Select/Select';
 import styled, { css } from 'styled-components';
-import DatePicker from 'react-datepicker';
+import SingleDatePicker from 'components/common/DatePicker/SingleDatePicker';
 import EditIcon from 'components/common/Icons/EditIcon';
 import closeIcon from 'components/common/Icons/CloseIcon';
 
@@ -55,7 +55,7 @@ export const OffsetSelector = styled(Input)`
   }
 `;
 
-export const DatePickerInput = styled(DatePicker)`
+export const DatePickerInput = styled(SingleDatePicker)`
   height: 32px;
   border: 1px ${({ theme }) => theme.select.borderColor.normal} solid;
   border-left: none;

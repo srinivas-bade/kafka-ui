@@ -6,7 +6,7 @@ import { clustersPayload } from 'lib/fixtures/clusters';
 const clusterName = 'test-cluster';
 
 describe('Clusters hooks', () => {
-  beforeEach(() => fetchMock.restore());
+  beforeEach(() => fetchMock.removeRoutes().clearHistory());
   describe('useClusters', () => {
     it('returns the correct data', async () => {
       const mock = fetchMock.getOnce('/api/clusters', clustersPayload);

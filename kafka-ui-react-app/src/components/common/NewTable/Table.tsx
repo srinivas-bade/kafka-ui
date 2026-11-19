@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  flexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getSortedRowModel,
-  useReactTable,
-  getPaginationRowModel,
-} from '@tanstack/react-table';
+import { flexRender, useTable } from '@tanstack/react-table';
 import type {
   Row,
+  RowData,
   SortingState,
   OnChangeFn,
   PaginationState,
@@ -20,27 +14,31 @@ import { Button } from 'components/common/Button/Button';
 import Input from 'components/common/Input/Input';
 
 import * as S from './Table.styled';
+import { features, TableFeatures } from './features';
 import updateSortingState from './utils/updateSortingState';
 import updatePaginationState from './utils/updatePaginationState';
 import ExpanderCell from './ExpanderCell';
 import SelectRowCell from './SelectRowCell';
 import SelectRowHeader from './SelectRowHeader';
 
-export interface TableProps<TData> {
+export interface TableProps<TData extends RowData> {
   data: TData[];
   pageCount?: number;
-  columns: ColumnDef<TData>[];
+  columns: ColumnDef<TableFeatures, TData>[];
 
   // Server-side processing: sorting, pagination
   serverSideProcessing?: boolean;
 
   // Expandeble rows
-  getRowCanExpand?: (row: Row<TData>) => boolean; // Enables the ability to expand row. Use `() => true` when want to expand all rows.
-  renderSubComponent?: React.FC<{ row: Row<TData> }>; // Component to render expanded row.
+  getRowCanExpand?: (row: Row<TableFeatures, TData>) => boolean; // Enables the ability to expand row. Use `() => true` when want to expand all rows.
+  renderSubComponent?: React.FC<{ row: Row<TableFeatures, TData> }>; // Component to render expanded row.
 
   // Selectable rows
-  enableRowSelection?: boolean | ((row: Row<TData>) => boolean); // Enables the ability to select row.
-  batchActionsBar?: React.FC<{ rows: Row<TData>[]; resetRowSelection(): void }>; // Component to render batch actions bar for slected rows
+  enableRowSelection?: boolean | ((row: Row<TableFeatures, TData>) => boolean); // Enables the ability to select row.
+  batchActionsBar?: React.FC<{
+    rows: Row<TableFeatures, TData>[];
+    resetRowSelection(): void;
+  }>; // Component to render batch actions bar for slected rows
 
   // Sorting.
   enableSorting?: boolean; // Enables sorting for table.
@@ -51,9 +49,9 @@ export interface TableProps<TData> {
   disabled?: boolean;
 
   // Handles row click. Can not be combined with `enableRowSelection` && expandable rows.
-  onRowClick?: (row: Row<TData>) => void;
+  onRowClick?: (row: Row<TableFeatures, TData>) => void;
 
-  onRowHover?: (row: Row<TData>) => void;
+  onRowHover?: (row: Row<TableFeatures, TData>) => void;
   onMouseLeave?: () => void;
 }
 
@@ -116,8 +114,7 @@ const getSortingFromSearchParams = (searchParams: URLSearchParams) => {
  *    - use URLSearchParams to get the pagination and sorting state from the url for your server side processing.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Table: React.FC<TableProps<any>> = ({
+const Table = <TData extends RowData>({
   data,
   pageCount,
   columns,
@@ -132,7 +129,7 @@ const Table: React.FC<TableProps<any>> = ({
   onRowClick,
   onRowHover,
   onMouseLeave,
-}) => {
+}: TableProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [rowSelection, setRowSelection] = React.useState({});
@@ -154,7 +151,8 @@ const Table: React.FC<TableProps<any>> = ({
     [searchParams, location]
   );
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     pageCount,
     columns,
@@ -164,16 +162,14 @@ const Table: React.FC<TableProps<any>> = ({
       rowSelection,
     },
     getRowId: (originalRow, index) => {
-      return originalRow.name ? originalRow.name : `${index}`;
+      return 'name' in originalRow && originalRow.name
+        ? originalRow.name
+        : `${index}`;
     },
     onSortingChange: onSortingChange as OnChangeFn<SortingState>,
     onPaginationChange: onPaginationChange as OnChangeFn<PaginationState>,
     onRowSelectionChange: setRowSelection,
     getRowCanExpand,
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     manualSorting: serverSideProcessing,
     manualPagination: serverSideProcessing,
     enableSorting,
@@ -181,32 +177,34 @@ const Table: React.FC<TableProps<any>> = ({
     enableRowSelection,
   });
 
-  const handleRowClick = (row: Row<typeof data>) => (e: React.MouseEvent) => {
-    // If row selection is enabled do not handle row click.
-    if (enableRowSelection) return undefined;
+  const handleRowClick =
+    (row: Row<TableFeatures, TData>) => (e: React.MouseEvent) => {
+      // If row selection is enabled do not handle row click.
+      if (enableRowSelection) return undefined;
 
-    // If row can be expanded do not handle row click.
-    if (row.getCanExpand()) {
-      e.stopPropagation();
-      return row.toggleExpanded();
-    }
+      // If row can be expanded do not handle row click.
+      if (row.getCanExpand()) {
+        e.stopPropagation();
+        return row.toggleExpanded();
+      }
 
-    if (onRowClick) {
-      e.stopPropagation();
-      return onRowClick(row);
-    }
+      if (onRowClick) {
+        e.stopPropagation();
+        return onRowClick(row);
+      }
 
-    return undefined;
-  };
+      return undefined;
+    };
 
-  const handleRowHover = (row: Row<typeof data>) => (e: React.MouseEvent) => {
-    if (onRowHover) {
-      e.stopPropagation();
-      return onRowHover(row);
-    }
+  const handleRowHover =
+    (row: Row<TableFeatures, TData>) => (e: React.MouseEvent) => {
+      if (onRowHover) {
+        e.stopPropagation();
+        return onRowHover(row);
+      }
 
-    return undefined;
-  };
+      return undefined;
+    };
 
   const handleMouseLeave = () => {
     if (onMouseLeave) {
@@ -232,7 +230,7 @@ const Table: React.FC<TableProps<any>> = ({
                 {!!enableRowSelection && (
                   <S.Th key={`${headerGroup.id}-select`}>
                     {flexRender(
-                      SelectRowHeader,
+                      SelectRowHeader<TData>,
                       headerGroup.headers[0].getContext()
                     )}
                   </S.Th>
@@ -281,7 +279,7 @@ const Table: React.FC<TableProps<any>> = ({
                   {!!enableRowSelection && (
                     <td key={`${row.id}-select`} style={{ width: '1px' }}>
                       {flexRender(
-                        SelectRowCell,
+                        SelectRowCell<TData>,
                         row.getVisibleCells()[0].getContext()
                       )}
                     </td>
@@ -289,24 +287,27 @@ const Table: React.FC<TableProps<any>> = ({
                   {table.getCanSomeRowsExpand() && (
                     <td key={`${row.id}-expander`} style={{ width: '1px' }}>
                       {flexRender(
-                        ExpanderCell,
+                        ExpanderCell<TData>,
                         row.getVisibleCells()[0].getContext()
                       )}
                     </td>
                   )}
-                  {row
-                    .getVisibleCells()
-                    .map(({ id, getContext, column: { columnDef } }) => (
-                      <td
-                        key={id}
-                        style={{
-                          width:
-                            columnDef.size !== 150 ? columnDef.size : undefined,
-                        }}
-                      >
-                        {flexRender(columnDef.cell, getContext())}
-                      </td>
-                    ))}
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      style={{
+                        width:
+                          cell.column.columnDef.size !== 150
+                            ? cell.column.columnDef.size
+                            : undefined,
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
                 </S.Row>
                 {row.getIsExpanded() && SubComponent && (
                   <S.Row expanded>
@@ -370,7 +371,7 @@ const Table: React.FC<TableProps<any>> = ({
               <Input
                 type="number"
                 positiveOnly
-                defaultValue={table.getState().pagination.pageIndex + 1}
+                defaultValue={table.state.pagination.pageIndex + 1}
                 inputSize="M"
                 max={table.getPageCount()}
                 min={1}
@@ -383,7 +384,7 @@ const Table: React.FC<TableProps<any>> = ({
           </S.Pages>
           <S.PageInfo>
             <span>
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              Page {table.state.pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}{' '}
             </span>
           </S.PageInfo>

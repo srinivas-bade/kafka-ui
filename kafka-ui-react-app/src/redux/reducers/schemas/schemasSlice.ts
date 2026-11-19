@@ -69,12 +69,12 @@ export const fetchSchemaVersions = createAsyncThunk<
   }
 );
 
-const schemaVersionsAdapter = createEntityAdapter<SchemaSubject>({
-  selectId: ({ id }) => id,
+const schemaVersionsAdapter = createEntityAdapter({
+  selectId: ({ id }: SchemaSubject) => id,
   sortComparer: (a, b) => b.id - a.id,
 });
-const schemasAdapter = createEntityAdapter<SchemaSubject>({
-  selectId: ({ subject }) => subject,
+const schemasAdapter = createEntityAdapter({
+  selectId: ({ subject }: SchemaSubject) => subject,
 });
 
 const SCHEMAS_PAGE_COUNT = 1;

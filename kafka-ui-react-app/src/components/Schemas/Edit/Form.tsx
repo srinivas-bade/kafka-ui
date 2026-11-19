@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { useForm, Controller, FormProvider, Resolver } from 'react-hook-form';
 import {
   CompatibilityLevelCompatibilityEnum,
   SchemaType,
@@ -60,7 +60,9 @@ const Form: React.FC = () => {
     });
   const methods = useForm<NewSchemaSubjectRaw>({
     mode: 'onChange',
-    resolver: yupResolver(validationSchema()),
+    resolver: yupResolver(
+      validationSchema()
+    ) as unknown as Resolver<NewSchemaSubjectRaw>,
     defaultValues: {
       schemaType: schema?.schemaType,
       compatibilityLevel:

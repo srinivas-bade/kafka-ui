@@ -2,9 +2,10 @@ import React from 'react';
 import EditorViewer from 'components/common/EditorViewer/EditorViewer';
 import { SchemaSubject } from 'generated-sources';
 import { Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 
 interface Props {
-  row: Row<SchemaSubject>;
+  row: Row<TableFeatures, SchemaSubject>;
 }
 
 const SchemaVersion: React.FC<Props> = ({ row }) => {

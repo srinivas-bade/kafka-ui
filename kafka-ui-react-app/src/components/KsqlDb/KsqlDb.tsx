@@ -3,6 +3,7 @@ import Query from 'components/KsqlDb/Query/Query';
 import useAppParams from 'lib/hooks/useAppParams';
 import * as Metrics from 'components/common/Metrics';
 import {
+  clusterKsqlDbQueryPath,
   clusterKsqlDbQueryRelativePath,
   clusterKsqlDbStreamsPath,
   clusterKsqlDbStreamsRelativePath,
@@ -31,7 +32,7 @@ const KsqlDb: React.FC = () => {
     <>
       <PageHeading text="KSQL DB">
         <ActionButton
-          to={clusterKsqlDbQueryRelativePath}
+          to={clusterKsqlDbQueryPath(clusterName)}
           buttonType="primary"
           buttonSize="M"
           permission={{

@@ -47,7 +47,7 @@ const renderComponent = (
   );
 
 describe('Details', () => {
-  afterEach(() => fetchMock.reset());
+  afterEach(() => fetchMock.removeRoutes().clearHistory());
 
   describe('fetch failed', () => {
     it('renders pageloader', async () => {
@@ -59,8 +59,12 @@ describe('Details', () => {
       await act(() => {
         renderComponent();
       });
-      expect(schemasAPILatestMock.called(schemasAPILatestUrl)).toBeTruthy();
-      expect(schemasAPIVersionsMock.called(schemasAPIVersionsUrl)).toBeTruthy();
+      expect(
+        schemasAPILatestMock.callHistory.called(schemasAPILatestUrl)
+      ).toBeTruthy();
+      expect(
+        schemasAPIVersionsMock.callHistory.called(schemasAPIVersionsUrl)
+      ).toBeTruthy();
       expect(screen.getByRole('progressbar')).toBeInTheDocument();
       expect(screen.queryByText(schemaVersion.subject)).not.toBeInTheDocument();
       expect(screen.queryByText('Edit Schema')).not.toBeInTheDocument();
@@ -82,8 +86,8 @@ describe('Details', () => {
         await act(() => {
           renderComponent();
         });
-        expect(schemasAPILatestMock.called()).toBeTruthy();
-        expect(schemasAPIVersionsMock.called()).toBeTruthy();
+        expect(schemasAPILatestMock.callHistory.called()).toBeTruthy();
+        expect(schemasAPIVersionsMock.callHistory.called()).toBeTruthy();
         expect(screen.getByText('Edit Schema')).toBeInTheDocument();
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
         expect(screen.getByRole('table')).toBeInTheDocument();
@@ -104,8 +108,8 @@ describe('Details', () => {
           await act(() => {
             renderComponent();
           });
-          expect(schemasAPILatestMock.called()).toBeTruthy();
-          expect(schemasAPIVersionsMock.called()).toBeTruthy();
+          expect(schemasAPILatestMock.callHistory.called()).toBeTruthy();
+          expect(schemasAPIVersionsMock.callHistory.called()).toBeTruthy();
           expect(screen.getByText('Edit Schema')).toBeInTheDocument();
           expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
           expect(screen.getByRole('table')).toBeInTheDocument();
@@ -126,8 +130,8 @@ describe('Details', () => {
         await act(() => {
           renderComponent();
         });
-        expect(schemasAPILatestMock.called()).toBeTruthy();
-        expect(schemasAPIVersionsMock.called()).toBeTruthy();
+        expect(schemasAPILatestMock.callHistory.called()).toBeTruthy();
+        expect(schemasAPIVersionsMock.callHistory.called()).toBeTruthy();
       });
 
       // seems like incorrect behaviour

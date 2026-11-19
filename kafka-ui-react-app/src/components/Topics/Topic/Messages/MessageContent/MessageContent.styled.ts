@@ -79,9 +79,9 @@ export const MetadataMeta = styled.p`
 
 export const Tab = styled.button<{ $active?: boolean }>(
   ({ theme, $active }) => css`
-    background-color: ${theme.secondaryTab.backgroundColor[
-      $active ? 'active' : 'normal'
-    ]};
+    background-color: ${
+      theme.secondaryTab.backgroundColor[$active ? 'active' : 'normal']
+    };
     color: ${theme.secondaryTab.color[$active ? 'active' : 'normal']};
     padding: 6px 16px;
     height: 32px;

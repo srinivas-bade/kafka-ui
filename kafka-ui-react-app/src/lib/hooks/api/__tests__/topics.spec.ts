@@ -24,7 +24,7 @@ jest.mock('lib/errorHandling', () => ({
 }));
 
 describe('Topics hooks', () => {
-  beforeEach(() => fetchMock.restore());
+  beforeEach(() => fetchMock.removeRoutes().clearHistory());
   it('handles useTopics', async () => {
     const mock = fetchMock.getOnce(topicsPath, []);
     const { result } = renderQueryHook(() => hooks.useTopics({ clusterName }));
@@ -60,7 +60,7 @@ describe('Topics hooks', () => {
     it('disables useTopicAnalysis', async () => {
       const mock = fetchMock.getOnce(`${topicPath}/analysis`, {});
       renderQueryHook(() => hooks.useTopicAnalysis(topicParams, false));
-      expect(mock.calls()).toHaveLength(0);
+      expect(mock.callHistory.calls()).toHaveLength(0);
     });
   });
 
@@ -85,7 +85,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(formData);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
 
     it('useUpdateTopic', async () => {
@@ -111,7 +111,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(formData);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useIncreaseTopicPartitionsCount', async () => {
       const mock = fetchMock.patchOnce(`${topicPath}/partitions`, {});
@@ -123,7 +123,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(3);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useUpdateTopicReplicationFactor', async () => {
       const mock = fetchMock.patchOnce(`${topicPath}/replications`, {});
@@ -135,7 +135,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(3);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useDeleteTopic', async () => {
       const mock = fetchMock.deleteOnce(topicPath, {});
@@ -146,7 +146,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(topicName);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useRecreateTopic', async () => {
       const mock = fetchMock.postOnce(topicPath, {});
@@ -157,7 +157,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync();
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useSendMessage', async () => {
       const mock = fetchMock.postOnce(`${topicPath}/messages`, {});
@@ -172,7 +172,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync(message);
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useAnalyzeTopic', async () => {
       const mock = fetchMock.postOnce(`${topicPath}/analysis`, {});
@@ -183,7 +183,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync();
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
     it('useCancelTopicAnalysis', async () => {
       const mock = fetchMock.deleteOnce(`${topicPath}/analysis`, {});
@@ -197,7 +197,7 @@ describe('Topics hooks', () => {
         result.current.mutateAsync();
       });
       await waitFor(() => expect(result.current.isSuccess).toBeTruthy());
-      expect(mock.calls()).toHaveLength(1);
+      expect(mock.callHistory.calls()).toHaveLength(1);
     });
   });
 });

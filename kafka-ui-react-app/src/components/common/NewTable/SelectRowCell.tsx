@@ -1,8 +1,12 @@
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, RowData } from '@tanstack/react-table';
 import React from 'react';
 import IndeterminateCheckbox from 'components/common/IndeterminateCheckbox/IndeterminateCheckbox';
 
-const SelectRowCell: React.FC<CellContext<unknown, unknown>> = ({ row }) => (
+import type { TableFeatures } from './features';
+
+const SelectRowCell = <TData extends RowData>({
+  row,
+}: CellContext<TableFeatures, TData, unknown>) => (
   <IndeterminateCheckbox
     checked={row.getIsSelected()}
     disabled={!row.getCanSelect()}

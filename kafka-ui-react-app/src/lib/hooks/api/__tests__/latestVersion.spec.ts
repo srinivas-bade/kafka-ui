@@ -6,7 +6,7 @@ import { useLatestVersion } from 'lib/hooks/api/latestVersion';
 const latestVersionPath = '/api/info';
 
 describe('Latest version hooks', () => {
-  beforeEach(() => fetchMock.restore());
+  beforeEach(() => fetchMock.removeRoutes().clearHistory());
   describe('useLatestVersion', () => {
     it('returns the correct data', async () => {
       const mock = fetchMock.getOnce(latestVersionPath, latestVersionPayload);

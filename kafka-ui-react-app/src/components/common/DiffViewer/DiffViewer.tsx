@@ -1,10 +1,9 @@
-import { diff as DiffEditor } from 'react-ace';
+import { diff as DiffEditor, IDiffEditorProps } from 'react-ace';
 import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/mode-json5';
 import 'ace-builds/src-noconflict/mode-protobuf';
 import 'ace-builds/src-noconflict/theme-textmate';
 import React from 'react';
-import { IDiffEditorProps } from 'react-ace/lib/diff';
 import { SchemaType } from 'generated-sources';
 
 interface DiffViewerProps extends IDiffEditorProps {

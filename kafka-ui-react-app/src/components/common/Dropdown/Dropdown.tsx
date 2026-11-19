@@ -11,7 +11,7 @@ interface DropdownProps extends PropsWithChildren<Partial<MenuProps>> {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ label, disabled, children }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const { value: isOpen, setFalse, setTrue } = useBoolean(false);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -31,13 +31,13 @@ const Dropdown: React.FC<DropdownProps> = ({ label, disabled, children }) => {
         {label || <VerticalElipsisIcon />}
       </S.DropdownButton>
       <S.Dropdown
-        anchorRef={ref}
+        anchorRef={ref as React.RefObject<HTMLButtonElement>}
         state={isOpen ? 'open' : 'closed'}
         onMouseLeave={setFalse}
         onClose={setFalse}
         align="end"
         direction="bottom"
-        offsetY={10}
+        gap={10}
         viewScroll="auto"
       >
         {children}

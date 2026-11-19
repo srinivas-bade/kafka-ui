@@ -67,7 +67,7 @@ describe('Connectors List', () => {
         })
       );
       await waitFor(() =>
-        expect(mockedUsedNavigate).toBeCalledWith(
+        expect(mockedUsedNavigate).toHaveBeenCalledWith(
           clusterConnectConnectorPath(
             clusterName,
             'first',

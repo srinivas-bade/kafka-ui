@@ -50,7 +50,7 @@ const Select = React.forwardRef<HTMLUListElement, SelectProps>(
       if (!disabled) setShowOptions(!showOptions);
     };
 
-    const selectContainerRef = useRef(null);
+    const selectContainerRef = useRef<HTMLDivElement>(null);
     const clickOutsideHandler = () => setShowOptions(false);
     useClickOutside(selectContainerRef, clickOutsideHandler);
 

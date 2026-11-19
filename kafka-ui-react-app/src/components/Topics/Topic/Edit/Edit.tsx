@@ -1,6 +1,6 @@
 import React from 'react';
 import { TopicConfigByName, TopicFormData } from 'redux/interfaces';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import TopicForm from 'components/Topics/shared/Form/TopicForm';
 import { RouteParamsClusterTopic } from 'lib/paths';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +38,9 @@ const Edit: React.FC = () => {
 
   const methods = useForm<TopicFormData>({
     defaultValues,
-    resolver: yupResolver(topicFormValidationSchema),
+    resolver: yupResolver(
+      topicFormValidationSchema
+    ) as unknown as Resolver<TopicFormData>,
     mode: 'onChange',
   });
 
@@ -83,7 +85,7 @@ const Edit: React.FC = () => {
           topicName={topicName}
           retentionBytes={defaultValues.retentionBytes}
           inSyncReplicas={Number(defaultValues.minInSyncReplicas)}
-          isSubmitting={updateTopic.isLoading}
+          isSubmitting={updateTopic.isPending}
           cleanUpPolicy={topic?.cleanUpPolicy}
           isEditing
           onSubmit={methods.handleSubmit(onSubmit)}

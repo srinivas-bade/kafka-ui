@@ -1,9 +1,12 @@
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, RowData } from '@tanstack/react-table';
 import React from 'react';
 
+import type { TableFeatures } from './features';
 import * as S from './Table.styled';
 
-const ExpanderCell: React.FC<CellContext<unknown, unknown>> = ({ row }) => {
+const ExpanderCell = <TData extends RowData>({
+  row,
+}: CellContext<TableFeatures, TData, unknown>) => {
   return (
     <S.ExpaderButton
       width="16"

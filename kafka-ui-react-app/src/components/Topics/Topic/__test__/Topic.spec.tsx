@@ -6,7 +6,7 @@ import Details from 'components/Topics/Topic/Topic';
 import { render, WithRoute } from 'lib/testHelpers';
 import {
   clusterTopicConsumerGroupsPath,
-  clusterTopicEditRelativePath,
+  clusterTopicEditPath,
   clusterTopicMessagesPath,
   clusterTopicPath,
   clusterTopicSettingsPath,
@@ -168,7 +168,9 @@ describe('Details', () => {
         renderComponent();
         const button = screen.getAllByText('Edit settings')[0];
         await userEvent.click(button);
-        expect(mockNavigate).toHaveBeenCalledWith(clusterTopicEditRelativePath);
+        expect(mockNavigate).toHaveBeenCalledWith(
+          clusterTopicEditPath(mockClusterName, topic.name)
+        );
       });
     });
 
@@ -211,7 +213,7 @@ describe('Details', () => {
       const confirmBtn = screen.getByRole('button', { name: /Confirm/i });
 
       await waitFor(() => userEvent.click(confirmBtn));
-      expect(mockRecreate).toBeCalledTimes(1);
+      expect(mockRecreate).toHaveBeenCalledTimes(1);
     });
 
     it('closes popup confirmation window after click on Cancel button', async () => {

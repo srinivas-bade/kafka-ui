@@ -8,7 +8,7 @@ const brokersPath = `/api/clusters/${clusterName}/brokers`;
 const brokerPath = `${brokersPath}/${brokerId}`;
 
 describe('Brokers hooks', () => {
-  beforeEach(() => fetchMock.restore());
+  beforeEach(() => fetchMock.removeRoutes().clearHistory());
   describe('useBrokers', () => {
     it('useBrokers', async () => {
       const mock = fetchMock.getOnce(brokersPath, []);

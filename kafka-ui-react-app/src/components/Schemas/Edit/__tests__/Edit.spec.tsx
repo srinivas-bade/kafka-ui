@@ -40,7 +40,7 @@ const renderComponent = (
   );
 
 describe('Edit', () => {
-  afterEach(() => fetchMock.reset());
+  afterEach(() => fetchMock.removeRoutes().clearHistory());
 
   describe('fetch success', () => {
     describe('has schema versions', () => {
@@ -49,7 +49,7 @@ describe('Edit', () => {
         await act(() => {
           renderComponent();
         });
-        expect(fetchMock.called(schemasAPILatestUrl)).toBeTruthy();
+        expect(fetchMock.callHistory.called(schemasAPILatestUrl)).toBeTruthy();
         expect(screen.getByText('Submit')).toBeInTheDocument();
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
       });
@@ -63,7 +63,7 @@ describe('Edit', () => {
         await act(() => {
           renderComponent();
         });
-        expect(fetchMock.called(schemasAPILatestUrl)).toBeTruthy();
+        expect(fetchMock.callHistory.called(schemasAPILatestUrl)).toBeTruthy();
         expect(screen.getByText('Submit')).toBeInTheDocument();
         expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
       });

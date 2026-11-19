@@ -1,14 +1,20 @@
-import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
+import React, {
+  PropsWithChildren,
+  ReactElement,
+  Suspense,
+  useMemo,
+} from 'react';
 import {
   MemoryRouter,
   MemoryRouterProps,
   Route,
   Routes,
 } from 'react-router-dom';
-import fetchMock from 'fetch-mock';
+import { FetchMock } from 'fetch-mock';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { StyleSheetManager, ThemeProvider } from 'styled-components';
 import { theme } from 'theme/theme';
+import { shouldForwardProp } from 'lib/styledComponents';
 import {
   render,
   renderHook,
@@ -23,6 +29,7 @@ import {
   QueryClient,
   QueryClientProvider,
   UseQueryResult,
+  UseSuspenseQueryResult,
 } from '@tanstack/react-query';
 import { ConfirmContextProvider } from 'components/contexts/ConfirmContext';
 import ConfirmationModal from 'components/common/ConfirmationModal/ConfirmationModal';
@@ -50,11 +57,15 @@ interface WithRouteProps {
 }
 
 export const expectQueryWorks = async (
-  mock: fetchMock.FetchMockStatic,
-  result: { current: UseQueryResult<unknown, unknown> }
+  mock: FetchMock,
+  result: {
+    current:
+      | UseQueryResult<unknown, unknown>
+      | UseSuspenseQueryResult<unknown, unknown>;
+  }
 ) => {
   await waitFor(() => expect(result.current.isFetched).toBeTruthy());
-  expect(mock.calls()).toHaveLength(1);
+  expect(mock.callHistory.calls()).toHaveLength(1);
   expect(result.current.data).toBeDefined();
 };
 
@@ -74,7 +85,9 @@ export const TestQueryClientProvider: React.FC<PropsWithChildren<unknown>> = ({
     defaultOptions: { queries: { retry: false } },
   });
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={null}>{children}</Suspense>
+    </QueryClientProvider>
   );
 };
 
@@ -108,7 +121,7 @@ const customRender = (
   ui: ReactElement,
   {
     preloadedState,
-    store = configureStore<RootState>({
+    store = configureStore({
       reducer: rootReducer,
       preloadedState,
     }),
@@ -126,28 +139,32 @@ const customRender = (
       <GlobalSettingsContext.Provider
         value={globalSettings || { hasDynamicConfig: false }}
       >
-        <ThemeProvider theme={theme}>
-          <TestUserInfoProvider data={userInfo}>
-            <ConfirmContextProvider>
-              <Provider store={store}>
-                <MemoryRouter initialEntries={initialEntries}>
-                  <div>
-                    {children}
-                    <ConfirmationModal />
-                  </div>
-                </MemoryRouter>
-              </Provider>
-            </ConfirmContextProvider>
-          </TestUserInfoProvider>
-        </ThemeProvider>
+        <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+          <ThemeProvider theme={theme}>
+            <TestUserInfoProvider data={userInfo}>
+              <ConfirmContextProvider>
+                <Provider store={store}>
+                  <MemoryRouter initialEntries={initialEntries}>
+                    <div>
+                      {children}
+                      <ConfirmationModal />
+                    </div>
+                  </MemoryRouter>
+                </Provider>
+              </ConfirmContextProvider>
+            </TestUserInfoProvider>
+          </ThemeProvider>
+        </StyleSheetManager>
       </GlobalSettingsContext.Provider>
     </TestQueryClientProvider>
   );
   return render(ui, { wrapper: AllTheProviders, ...renderOptions });
 };
 
-const customRenderHook = (hook: () => UseQueryResult<unknown, unknown>) =>
-  renderHook(hook, { wrapper: TestQueryClientProvider });
+const customRenderHook = (
+  hook: () =>
+    UseQueryResult<unknown, unknown> | UseSuspenseQueryResult<unknown, unknown>
+) => renderHook(hook, { wrapper: TestQueryClientProvider });
 
 export { customRender as render, customRenderHook as renderQueryHook };
 

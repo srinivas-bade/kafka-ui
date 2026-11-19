@@ -1,10 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React, { act, PropsWithChildren } from 'react';
 import { render } from 'lib/testHelpers';
 import { screen } from '@testing-library/dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import TopicForm, { Props } from 'components/Topics/shared/Form/TopicForm';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 const isSubmitting = false;
 const onSubmit = jest.fn();
@@ -77,6 +76,6 @@ describe('TopicForm', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Create topic' }));
 
-    expect(onSubmit).toBeCalledTimes(1);
+    expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 });

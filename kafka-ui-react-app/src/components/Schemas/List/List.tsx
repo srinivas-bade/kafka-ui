@@ -22,6 +22,7 @@ import Search from 'components/common/Search/Search';
 import PlusIcon from 'components/common/Icons/PlusIcon';
 import Table, { LinkCell } from 'components/common/NewTable';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { Action, SchemaSubject, ResourceType } from 'generated-sources';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PER_PAGE } from 'lib/constants';
@@ -52,7 +53,7 @@ const List: React.FC = () => {
     };
   }, [clusterName, dispatch, searchParams]);
 
-  const columns = React.useMemo<ColumnDef<SchemaSubject>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, SchemaSubject>[]>(
     () => [
       {
         header: 'Subject',

@@ -3,22 +3,27 @@ import {
   SerdeDescription,
   TopicSerdeSuggestion,
 } from 'generated-sources';
-import jsf from 'json-schema-faker';
+import { generateSync } from 'json-schema-faker';
 import { compact } from 'lodash';
 import Ajv, { DefinedError } from 'ajv/dist/2020';
 import addFormats from 'ajv-formats';
 import upperFirst from 'lodash/upperFirst';
 
-jsf.option('fillProperties', false);
-jsf.option('alwaysFakeOptionals', true);
-jsf.option('failOnInvalidFormat', false);
+// json-schema-faker 0.6+ does not fail on unknown formats and uses a fixed seed by default
+const jsfOptions = {
+  fillProperties: false,
+  alwaysFakeOptionals: true,
+};
 
 const generateValueFromSchema = (preferred?: SerdeDescription) => {
   if (!preferred?.schema) {
     return undefined;
   }
   const parsedSchema = JSON.parse(preferred.schema);
-  const value = jsf.generate(parsedSchema);
+  const value = generateSync(parsedSchema, {
+    ...jsfOptions,
+    seed: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+  });
   return JSON.stringify(value);
 };
 

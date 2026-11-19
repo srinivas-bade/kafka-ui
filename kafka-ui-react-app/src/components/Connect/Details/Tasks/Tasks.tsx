@@ -3,12 +3,15 @@ import { useConnectorTasks } from 'lib/hooks/api/kafkaConnect';
 import useAppParams from 'lib/hooks/useAppParams';
 import { RouterParamsClusterConnectConnector } from 'lib/paths';
 import { ColumnDef, Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { Task } from 'generated-sources';
 import Table, { TagCell } from 'components/common/NewTable';
 
 import ActionsCellTasks from './ActionsCellTasks';
 
-const ExpandedTaskRow: React.FC<{ row: Row<Task> }> = ({ row }) => {
+const ExpandedTaskRow: React.FC<{ row: Row<TableFeatures, Task> }> = ({
+  row,
+}) => {
   return <div>{row.original.status.trace}</div>;
 };
 
@@ -18,7 +21,7 @@ const Tasks: React.FC = () => {
   const routerProps = useAppParams<RouterParamsClusterConnectConnector>();
   const { data = [] } = useConnectorTasks(routerProps);
 
-  const columns = React.useMemo<ColumnDef<Task>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, Task>[]>(
     () => [
       { header: 'ID', accessorKey: 'status.id' },
       { header: 'Worker', accessorKey: 'status.workerId' },
@@ -50,7 +53,7 @@ const Tasks: React.FC = () => {
       data={data}
       emptyMessage="No tasks found"
       enableSorting
-      getRowCanExpand={(row) => row.original.status.trace?.length > 0}
+      getRowCanExpand={(row) => !!row.original.status.trace?.length}
       renderSubComponent={ExpandedTaskRow}
     />
   );

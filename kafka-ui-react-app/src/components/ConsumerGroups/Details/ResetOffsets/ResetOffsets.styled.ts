@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
+import SingleDatePicker from 'components/common/DatePicker/SingleDatePicker';
 
 export const OffsetsWrapper = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ export const OffsetsWrapper = styled.div`
   gap: 16px;
 `;
 
-export const DatePickerInput = styled(DatePicker).attrs({
+export const DatePickerInput = styled(SingleDatePicker).attrs({
   showTimeInput: true,
   timeInputLabel: 'Time:',
   dateFormat: 'MMMM d, yyyy h:mm aa',

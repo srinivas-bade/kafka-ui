@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from 'components/Topics/Topic/Messages/Filters/Filters.styled';
 import { InputLabel } from 'components/common/Input/InputLabel.styled';
 import Input from 'components/common/Input/Input';
-import { FormProvider, Controller, useForm } from 'react-hook-form';
+import { FormProvider, Controller, useForm, Resolver } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button } from 'components/common/Button/Button';
 import { FormError } from 'components/common/Input/Input.styled';
@@ -40,7 +40,7 @@ const AddEditFilterContainer: React.FC<AddEditFilterContainerProps> = ({
 }) => {
   const methods = useForm<AddMessageFilters>({
     mode: 'onChange',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as Resolver<AddMessageFilters>,
   });
   const {
     handleSubmit,

@@ -6,9 +6,11 @@ export const ExpaderButton = styled.svg<{
 }>(
   ({ theme: { table }, $disabled, getIsExpanded }) => css`
     & > path {
-      fill: ${table.expander[
-        ($disabled && 'disabled') || (getIsExpanded && 'active') || 'normal'
-      ]};
+      fill: ${
+        table.expander[
+          ($disabled && 'disabled') || (getIsExpanded && 'active') || 'normal'
+        ]
+      };
     }
     &:hover > path {
       fill: ${table.expander[$disabled ? 'disabled' : 'hover']};
@@ -228,10 +230,12 @@ export const Ellipsis = styled.div`
 export const TableWrapper = styled.div<{ $disabled: boolean }>(
   ({ $disabled }) => css`
     overflow-x: auto;
-    ${$disabled &&
-    css`
-      pointer-events: none;
-      opacity: 0.5;
-    `}
+    ${
+      $disabled &&
+      css`
+        pointer-events: none;
+        opacity: 0.5;
+      `
+    }
   `
 );

@@ -87,7 +87,7 @@ describe('AddEditFilterContainer component', () => {
       const textAreaElement = inputs[0] as HTMLTextAreaElement;
       const inputNameElement = inputs[1];
       expect(inputNameElement).toHaveValue(mockData.name);
-      expect(textAreaElement.value).toEqual('');
+      expect(textAreaElement).toHaveValue('');
     });
 
     it('should test whether the cancel callback is being called', async () => {
@@ -98,7 +98,7 @@ describe('AddEditFilterContainer component', () => {
       const cancelBtnElement = screen.getByText(/cancel/i);
 
       await userEvent.click(cancelBtnElement);
-      expect(cancelCallback).toBeCalled();
+      expect(cancelCallback).toHaveBeenCalled();
     });
 
     it('should test whether the submit Callback is being called', async () => {
@@ -118,7 +118,7 @@ describe('AddEditFilterContainer component', () => {
       expect(submitBtnElement).toBeEnabled();
 
       await userEvent.click(submitBtnElement);
-      expect(submitCallback).toBeCalled();
+      expect(submitCallback).toHaveBeenCalled();
     });
 
     it('should display the checkbox if the props is passed and initially check state', async () => {
