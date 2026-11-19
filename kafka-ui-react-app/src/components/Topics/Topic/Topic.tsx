@@ -1,11 +1,17 @@
 import React, { Suspense } from 'react';
 import { NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import {
+  clusterTopicConsumerGroupsPath,
   clusterTopicConsumerGroupsRelativePath,
+  clusterTopicEditPath,
   clusterTopicEditRelativePath,
+  clusterTopicMessagesPath,
   clusterTopicMessagesRelativePath,
+  clusterTopicPath,
+  clusterTopicSettingsPath,
   clusterTopicSettingsRelativePath,
   clusterTopicsPath,
+  clusterTopicStatisticsPath,
   clusterTopicStatisticsRelativePath,
   RouteParamsClusterTopic,
 } from 'lib/paths';
@@ -94,7 +100,9 @@ const Topic: React.FC = () => {
         </ActionButton>
         <Dropdown disabled={isReadOnly || data?.internal}>
           <ActionDropdownItem
-            onClick={() => navigate(clusterTopicEditRelativePath)}
+            onClick={() =>
+              navigate(clusterTopicEditPath(clusterName, topicName))
+            }
             permission={{
               resource: ResourceType.TOPIC,
               action: Action.EDIT,
@@ -172,14 +180,14 @@ const Topic: React.FC = () => {
       </PageHeading>
       <Navbar role="navigation">
         <NavLink
-          to="."
+          to={clusterTopicPath(clusterName, topicName)}
           className={({ isActive }) => (isActive ? 'is-active' : '')}
           end
         >
           Overview
         </NavLink>
         <ActionNavLink
-          to={clusterTopicMessagesRelativePath}
+          to={clusterTopicMessagesPath(clusterName, topicName)}
           className={({ isActive }) => (isActive ? 'is-active' : '')}
           permission={{
             resource: ResourceType.TOPIC,
@@ -190,19 +198,19 @@ const Topic: React.FC = () => {
           Messages
         </ActionNavLink>
         <NavLink
-          to={clusterTopicConsumerGroupsRelativePath}
+          to={clusterTopicConsumerGroupsPath(clusterName, topicName)}
           className={({ isActive }) => (isActive ? 'is-active' : '')}
         >
           Consumers
         </NavLink>
         <NavLink
-          to={clusterTopicSettingsRelativePath}
+          to={clusterTopicSettingsPath(clusterName, topicName)}
           className={({ isActive }) => (isActive ? 'is-active' : '')}
         >
           Settings
         </NavLink>
         <NavLink
-          to={clusterTopicStatisticsRelativePath}
+          to={clusterTopicStatisticsPath(clusterName, topicName)}
           className={({ isActive }) => (isActive ? 'is-active' : '')}
         >
           Statistics

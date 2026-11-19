@@ -6,7 +6,7 @@ import Details from 'components/Topics/Topic/Topic';
 import { render, WithRoute } from 'lib/testHelpers';
 import {
   clusterTopicConsumerGroupsPath,
-  clusterTopicEditRelativePath,
+  clusterTopicEditPath,
   clusterTopicMessagesPath,
   clusterTopicPath,
   clusterTopicSettingsPath,
@@ -168,7 +168,9 @@ describe('Details', () => {
         renderComponent();
         const button = screen.getAllByText('Edit settings')[0];
         await userEvent.click(button);
-        expect(mockNavigate).toHaveBeenCalledWith(clusterTopicEditRelativePath);
+        expect(mockNavigate).toHaveBeenCalledWith(
+          clusterTopicEditPath(mockClusterName, topic.name)
+        );
       });
     });
 
