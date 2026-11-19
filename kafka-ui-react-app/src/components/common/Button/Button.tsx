@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 import Spinner from 'components/common/Spinner/Spinner';
 
 export interface Props
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    ButtonProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {
   to?: string | object;
   inProgress?: boolean;
 }

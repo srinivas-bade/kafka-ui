@@ -27,14 +27,19 @@ export const Sidebar = styled.div<{ $visible: boolean }>(
     bottom: 0;
     padding: 8px 16px;
     overflow-y: scroll;
-    transition: width 0.25s, opacity 0.25s, transform 0.25s,
+    transition:
+      width 0.25s,
+      opacity 0.25s,
+      transform 0.25s,
       -webkit-transform 0.25s;
     background: ${theme.menu.backgroundColor.normal};
     @media screen and (max-width: 1023px) {
-      ${$visible &&
-      css`
-        transform: translate3d(${theme.layout.navBarWidth}, 0, 0);
-      `};
+      ${
+        $visible &&
+        css`
+          transform: translate3d(${theme.layout.navBarWidth}, 0, 0);
+        `
+      };
       left: -${theme.layout.navBarWidth};
       z-index: 100;
     }
@@ -74,15 +79,17 @@ export const Overlay = styled.div<{ $visible: boolean }>(
     left: 0;
     position: absolute;
     top: 0;
-    ${$visible &&
-    css`
-      @media screen and (max-width: 1023px) {
-        bottom: 0;
-        right: 0;
-        visibility: visible;
-        opacity: 0.7;
-        background-color: ${theme.layout.overlay.backgroundColor};
-      }
-    `}
+    ${
+      $visible &&
+      css`
+        @media screen and (max-width: 1023px) {
+          bottom: 0;
+          right: 0;
+          visibility: visible;
+          opacity: 0.7;
+          background-color: ${theme.layout.overlay.backgroundColor};
+        }
+      `
+    }
   `
 );

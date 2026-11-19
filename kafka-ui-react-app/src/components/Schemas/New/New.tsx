@@ -1,6 +1,6 @@
 import React from 'react';
 import { NewSchemaSubjectRaw } from 'redux/interfaces';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm, Resolver } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import {
   ClusterNameRoute,
@@ -64,7 +64,9 @@ const New: React.FC = () => {
     defaultValues: {
       schemaType: SchemaType.AVRO,
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      validationSchema
+    ) as unknown as Resolver<NewSchemaSubjectRaw>,
   });
   const {
     register,

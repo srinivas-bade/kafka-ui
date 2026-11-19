@@ -87,7 +87,7 @@ describe('AddEditFilterContainer component', () => {
       const textAreaElement = inputs[0] as HTMLTextAreaElement;
       const inputNameElement = inputs[1];
       expect(inputNameElement).toHaveValue(mockData.name);
-      expect(textAreaElement.value).toEqual('');
+      expect(textAreaElement).toHaveValue('');
     });
 
     it('should test whether the cancel callback is being called', async () => {

@@ -6,6 +6,7 @@ import {
   Controller,
   useFieldArray,
   FormProvider,
+  Resolver,
 } from 'react-hook-form';
 import { Button } from 'components/common/Button/Button';
 import IconButtonWrapper from 'components/common/Icons/IconButtonWrapper';
@@ -50,7 +51,7 @@ const QueryForm: React.FC<QueryFormProps> = ({
 }) => {
   const methods = useForm<FormValues>({
     mode: 'onTouched',
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema) as Resolver<FormValues>,
     defaultValues: {
       ksql: '',
       streamsProperties: [{ key: '', value: '' }],

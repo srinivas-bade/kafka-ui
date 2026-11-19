@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'components/common/Button/Button';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import formSchema from 'widgets/ClusterConfigForm/schema';
 import { FlexFieldset, StyledForm } from 'components/common/Form/Form.styled';
@@ -39,7 +39,9 @@ const ClusterConfigForm: React.FC<ClusterConfigFormProps> = ({
   const navigate = useNavigate();
   const methods = useForm<ClusterConfigFormValues>({
     mode: 'all',
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver(
+      formSchema
+    ) as unknown as Resolver<ClusterConfigFormValues>,
     defaultValues: {
       ...CLUSTER_CONFIG_FORM_DEFAULT_VALUES,
       ...initialValues,

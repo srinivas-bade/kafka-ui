@@ -84,7 +84,7 @@ describe('AddFilter component', () => {
       await userEvent.type(nameTextBox, nameValue);
 
       expect(addFilterBtn).toBeEnabled();
-      expect(codeTextBox.value).toEqual(`${codeValue}\n\n`);
+      expect(codeTextBox).toHaveValue(`${codeValue}\n\n`);
       expect(nameTextBox).toHaveValue(nameValue);
     });
 
