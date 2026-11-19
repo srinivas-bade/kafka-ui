@@ -5,30 +5,25 @@ import { showSuccessAlert } from 'lib/errorHandling';
 import { KafkaAcl } from 'generated-sources';
 
 export function useAcls(clusterName: ClusterName) {
-  return useQuery(
-    ['clusters', clusterName, 'acls'],
-    () => api.listAcls({ clusterName }),
-    {
-      suspense: false,
-    }
-  );
+  return useQuery({
+    queryKey: ['clusters', clusterName, 'acls'],
+    queryFn: () => api.listAcls({ clusterName }),
+  });
 }
 
 export function useCreateAclMutation(clusterName: ClusterName) {
-  return useMutation(
-    (data: KafkaAcl) =>
+  return useMutation({
+    mutationFn: (data: KafkaAcl) =>
       api.createAcl({
         clusterName,
         kafkaAcl: data,
       }),
-    {
-      onSuccess() {
-        showSuccessAlert({
-          message: 'Your ACL was created successfully',
-        });
-      },
-    }
-  );
+    onSuccess() {
+      showSuccessAlert({
+        message: 'Your ACL was created successfully',
+      });
+    },
+  });
 }
 
 export function useCreateAcl(clusterName: ClusterName) {
@@ -44,15 +39,16 @@ export function useCreateAcl(clusterName: ClusterName) {
 
 export function useDeleteAclMutation(clusterName: ClusterName) {
   const queryClient = useQueryClient();
-  return useMutation(
-    (acl: KafkaAcl) => api.deleteAcl({ clusterName, kafkaAcl: acl }),
-    {
-      onSuccess: () => {
-        showSuccessAlert({ message: 'ACL deleted' });
-        queryClient.invalidateQueries(['clusters', clusterName, 'acls']);
-      },
-    }
-  );
+  return useMutation({
+    mutationFn: (acl: KafkaAcl) =>
+      api.deleteAcl({ clusterName, kafkaAcl: acl }),
+    onSuccess: () => {
+      showSuccessAlert({ message: 'ACL deleted' });
+      queryClient.invalidateQueries({
+        queryKey: ['clusters', clusterName, 'acls'],
+      });
+    },
+  });
 }
 
 export function useDeleteAcl(clusterName: ClusterName) {

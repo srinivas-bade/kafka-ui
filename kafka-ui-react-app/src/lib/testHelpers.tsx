@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, ReactElement, useMemo } from 'react';
+import React, {
+  PropsWithChildren,
+  ReactElement,
+  Suspense,
+  useMemo,
+} from 'react';
 import {
   MemoryRouter,
   MemoryRouterProps,
@@ -23,6 +28,7 @@ import {
   QueryClient,
   QueryClientProvider,
   UseQueryResult,
+  UseSuspenseQueryResult,
 } from '@tanstack/react-query';
 import { ConfirmContextProvider } from 'components/contexts/ConfirmContext';
 import ConfirmationModal from 'components/common/ConfirmationModal/ConfirmationModal';
@@ -51,7 +57,11 @@ interface WithRouteProps {
 
 export const expectQueryWorks = async (
   mock: FetchMock,
-  result: { current: UseQueryResult<unknown, unknown> }
+  result: {
+    current:
+      | UseQueryResult<unknown, unknown>
+      | UseSuspenseQueryResult<unknown, unknown>;
+  }
 ) => {
   await waitFor(() => expect(result.current.isFetched).toBeTruthy());
   expect(mock.callHistory.calls()).toHaveLength(1);
@@ -74,7 +84,9 @@ export const TestQueryClientProvider: React.FC<PropsWithChildren<unknown>> = ({
     defaultOptions: { queries: { retry: false } },
   });
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={null}>{children}</Suspense>
+    </QueryClientProvider>
   );
 };
 
@@ -146,8 +158,10 @@ const customRender = (
   return render(ui, { wrapper: AllTheProviders, ...renderOptions });
 };
 
-const customRenderHook = (hook: () => UseQueryResult<unknown, unknown>) =>
-  renderHook(hook, { wrapper: TestQueryClientProvider });
+const customRenderHook = (
+  hook: () =>
+    UseQueryResult<unknown, unknown> | UseSuspenseQueryResult<unknown, unknown>
+) => renderHook(hook, { wrapper: TestQueryClientProvider });
 
 export { customRender as render, customRenderHook as renderQueryHook };
 

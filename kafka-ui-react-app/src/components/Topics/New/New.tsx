@@ -63,7 +63,7 @@ const New: React.FC = () => {
           partitionCount={Number(partitionCount)}
           replicationFactor={Number(replicationFactor)}
           inSyncReplicas={Number(inSyncReplicas)}
-          isSubmitting={createTopic.isLoading}
+          isSubmitting={createTopic.isPending}
           onSubmit={methods.handleSubmit(onSubmit)}
         />
       </FormProvider>

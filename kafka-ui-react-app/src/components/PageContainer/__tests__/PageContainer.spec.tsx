@@ -13,6 +13,9 @@ interface DataType {
   data: Cluster[] | undefined;
 }
 jest.mock('lib/hooks/api/clusters');
+jest.mock('lib/hooks/api/roles', () => ({
+  useGetUserInfo: () => ({ data: undefined }),
+}));
 const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

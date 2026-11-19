@@ -13,7 +13,7 @@ import {
 } from 'generated-sources';
 import { showServerError } from 'lib/errorHandling';
 import toast from 'react-hot-toast';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { messagesApiClient } from 'lib/api';
 import { StopLoading } from 'components/Topics/Topic/Messages/Messages.styled';
 
@@ -186,13 +186,11 @@ export const useTopicMessages = ({
 export function useSerdes(props: GetSerdesRequest) {
   const { clusterName, topicName, use } = props;
 
-  return useQuery(
-    ['clusters', clusterName, 'topics', topicName, 'serdes', use],
-    () => messagesApiClient.getSerdes(props),
-    {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchInterval: false,
-    }
-  );
+  return useSuspenseQuery({
+    queryKey: ['clusters', clusterName, 'topics', topicName, 'serdes', use],
+    queryFn: () => messagesApiClient.getSerdes(props),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: false,
+  });
 }

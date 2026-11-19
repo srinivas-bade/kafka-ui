@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react';
 import { renderQueryHook } from 'lib/testHelpers';
 import * as hooks from 'lib/hooks/api/topicMessages';
 import fetchMock, { FetchMock } from 'fetch-mock';
-import { UseQueryResult } from '@tanstack/react-query';
+import { UseQueryResult, UseSuspenseQueryResult } from '@tanstack/react-query';
 import { SerdeUsage } from 'generated-sources';
 
 const clusterName = 'test-cluster';
@@ -10,7 +10,11 @@ const topicName = 'test-topic';
 
 const expectQueryWorks = async (
   mock: FetchMock,
-  result: { current: UseQueryResult<unknown, unknown> }
+  result: {
+    current:
+      | UseQueryResult<unknown, unknown>
+      | UseSuspenseQueryResult<unknown, unknown>;
+  }
 ) => {
   await waitFor(() => expect(result.current.isFetched).toBeTruthy());
   expect(mock.callHistory.calls()).toHaveLength(1);

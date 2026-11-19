@@ -6,7 +6,11 @@ import {
 } from 'generated-sources';
 import { kafkaConnectApiClient as api } from 'lib/api';
 import sortBy from 'lodash/sortBy';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { ClusterName } from 'redux/interfaces';
 import { showSuccessAlert } from 'lib/errorHandling';
 
@@ -46,79 +50,78 @@ const connectorTasksKey = (props: UseConnectorProps) => [
 ];
 
 export function useConnects(clusterName: ClusterName) {
-  return useQuery(connectsKey(clusterName), () =>
-    api.getConnects({ clusterName })
-  );
+  return useSuspenseQuery({
+    queryKey: connectsKey(clusterName),
+    queryFn: () => api.getConnects({ clusterName }),
+  });
 }
 export function useConnectors(clusterName: ClusterName, search?: string) {
-  return useQuery(
-    connectorsKey(clusterName, search),
-    () => api.getAllConnectors({ clusterName, search }),
-    {
-      select: (data) => sortBy(data, 'name'),
-    }
-  );
+  return useSuspenseQuery({
+    queryKey: connectorsKey(clusterName, search),
+    queryFn: () => api.getAllConnectors({ clusterName, search }),
+    select: (data) => sortBy(data, 'name'),
+  });
 }
 export function useConnector(props: UseConnectorProps) {
-  return useQuery(connectorKey(props), () => api.getConnector(props));
+  return useSuspenseQuery({
+    queryKey: connectorKey(props),
+    queryFn: () => api.getConnector(props),
+  });
 }
 export function useConnectorTasks(props: UseConnectorProps) {
-  return useQuery(
-    connectorTasksKey(props),
-    () => api.getConnectorTasks(props),
-    {
-      select: (data) => sortBy(data, 'status.id'),
-    }
-  );
+  return useSuspenseQuery({
+    queryKey: connectorTasksKey(props),
+    queryFn: () => api.getConnectorTasks(props),
+    select: (data) => sortBy(data, 'status.id'),
+  });
 }
 export function useUpdateConnectorState(props: UseConnectorProps) {
   const client = useQueryClient();
-  return useMutation(
-    (action: ConnectorAction) => api.updateConnectorState({ ...props, action }),
-    {
-      onSuccess: () =>
-        client.invalidateQueries(['clusters', props.clusterName, 'connectors']),
-    }
-  );
+  return useMutation({
+    mutationFn: (action: ConnectorAction) =>
+      api.updateConnectorState({ ...props, action }),
+    onSuccess: () =>
+      client.invalidateQueries({
+        queryKey: ['clusters', props.clusterName, 'connectors'],
+      }),
+  });
 }
 export function useRestartConnectorTask(props: UseConnectorProps) {
   const client = useQueryClient();
-  return useMutation(
-    (taskId: number) => api.restartConnectorTask({ ...props, taskId }),
-    {
-      onSuccess: () => client.invalidateQueries(connectorTasksKey(props)),
-    }
-  );
+  return useMutation({
+    mutationFn: (taskId: number) =>
+      api.restartConnectorTask({ ...props, taskId }),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: connectorTasksKey(props) }),
+  });
 }
 export function useConnectorConfig(props: UseConnectorProps) {
-  return useQuery([...connectorKey(props), 'config'], () =>
-    api.getConnectorConfig(props)
-  );
+  return useSuspenseQuery({
+    queryKey: [...connectorKey(props), 'config'],
+    queryFn: () => api.getConnectorConfig(props),
+  });
 }
 export function useUpdateConnectorConfig(props: UseConnectorProps) {
   const client = useQueryClient();
-  return useMutation(
-    (requestBody: Connector['config']) =>
+  return useMutation({
+    mutationFn: (requestBody: Connector['config']) =>
       api.setConnectorConfig({ ...props, requestBody }),
-    {
-      onSuccess: () => {
-        showSuccessAlert({
-          message: `Config successfully updated.`,
-        });
-        client.invalidateQueries(connectorKey(props));
-      },
-    }
-  );
+    onSuccess: () => {
+      showSuccessAlert({
+        message: `Config successfully updated.`,
+      });
+      client.invalidateQueries({ queryKey: connectorKey(props) });
+    },
+  });
 }
 function useCreateConnectorMutation(clusterName: ClusterName) {
   const client = useQueryClient();
-  return useMutation(
-    (props: CreateConnectorProps) =>
+  return useMutation({
+    mutationFn: (props: CreateConnectorProps) =>
       api.createConnector({ ...props, clusterName }),
-    {
-      onSuccess: () => client.invalidateQueries(connectorsKey(clusterName)),
-    }
-  );
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: connectorsKey(clusterName) }),
+  });
 }
 
 // this will change later when we validate the request before
@@ -136,7 +139,9 @@ export function useCreateConnector(clusterName: ClusterName) {
 export function useDeleteConnector(props: UseConnectorProps) {
   const client = useQueryClient();
 
-  return useMutation(() => api.deleteConnector(props), {
-    onSuccess: () => client.invalidateQueries(connectorsKey(props.clusterName)),
+  return useMutation({
+    mutationFn: () => api.deleteConnector(props),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: connectorsKey(props.clusterName) }),
   });
 }
