@@ -108,7 +108,7 @@ const customRender = (
   ui: ReactElement,
   {
     preloadedState,
-    store = configureStore<RootState>({
+    store = configureStore({
       reducer: rootReducer,
       preloadedState,
     }),
