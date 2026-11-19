@@ -29,7 +29,7 @@ export function useUpdateAppConfig({ initialName }: { initialName?: string }) {
       const existingConfig = await api.getCurrentConfig();
       const existingClusters = existingConfig.properties?.kafka?.clusters || [];
 
-      let clusters: ApplicationConfigPropertiesKafkaClusters[] = [];
+      let clusters: ApplicationConfigPropertiesKafkaClusters[];
 
       if (existingClusters.length > 0) {
         if (!initialName) {

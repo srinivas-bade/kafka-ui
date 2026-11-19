@@ -63,6 +63,9 @@
     "deadcode": "ts-prune -i src/generated-sources"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.1.1",
+    "@eslint/eslintrc": "^3.3.7",
+    "@eslint/js": "^10.0.1",
     "@jest/types": "^30.5.1",
     "@openapitools/openapi-generator-cli": "^2.42.2",
     "@swc/core": "^1.16.22",
@@ -79,7 +82,7 @@
     "@typescript-eslint/parser": "^8.73.0",
     "@vitejs/plugin-react-swc": "^4.3.3",
     "dotenv": "^18.0.10",
-    "eslint": "^8.57.1",
+    "eslint": "^10.15.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^10.1.8",
@@ -91,6 +94,7 @@
     "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
     "jest-environment-jsdom": "^30.5.2",
     "jest-sonar-reporter": "^2.0.0",
     "jest-styled-components": "^7.4.1",

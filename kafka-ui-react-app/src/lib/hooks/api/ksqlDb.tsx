@@ -59,7 +59,7 @@ const getFormattedErrorFromTableData = (
     };
   }
 
-  let title = '';
+  let title: string;
   let message = '';
   if (responseValues[0].length < 2) {
     const [messageText] = responseValues[0];
