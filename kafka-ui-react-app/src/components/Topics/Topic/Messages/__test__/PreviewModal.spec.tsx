@@ -98,12 +98,12 @@ describe('PreviewModal component', () => {
       await act(() => {
         renderComponent({ setFilters });
       });
-      userEvent.click(screen.getByRole('button', { name: 'Edit' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Edit' }));
       const fieldInput = screen.getByPlaceholderText('Field');
-      userEvent.type(fieldInput, fieldValue);
+      await userEvent.type(fieldInput, fieldValue);
       const pathInput = screen.getByPlaceholderText('Json Path');
-      userEvent.type(pathInput, pathValue);
-      userEvent.click(screen.getByRole('button', { name: 'Save' }));
+      await userEvent.type(pathInput, pathValue);
+      await userEvent.click(screen.getByRole('button', { name: 'Save' }));
       await act(() => {
         renderComponent({ setFilters, toggleIsOpen });
       });
