@@ -1,9 +1,4 @@
-import {
-  defineConfig,
-  loadEnv,
-  UserConfigExport,
-  splitVendorChunkPlugin,
-} from 'vite';
+import { defineConfig, loadEnv, UserConfigExport } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { ViteEjsPlugin } from 'vite-plugin-ejs';
@@ -15,7 +10,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tsconfigPaths(),
-      splitVendorChunkPlugin(),
       ViteEjsPlugin({
         PUBLIC_PATH: mode !== 'development' ? 'PUBLIC-PATH-VARIABLE' : '',
       }),
@@ -25,10 +19,21 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'build',
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: {
-            ace: ['ace-builds', 'react-ace'],
+          codeSplitting: {
+            groups: [
+              {
+                name: 'ace',
+                test: /[\\/]node_modules[\\/](ace-builds|react-ace)[\\/]/,
+                priority: 2,
+              },
+              {
+                name: 'vendor',
+                test: /[\\/]node_modules[\\/]/,
+                priority: 1,
+              },
+            ],
           },
         },
       },

@@ -40,8 +40,8 @@
     "sass": "^1.108.2",
     "styled-components": "^5.3.11",
     "use-debounce": "^9.0.4",
-    "vite": "^4.5.14",
-    "vite-tsconfig-paths": "^4.3.2",
+    "vite": "^8.3.8",
+    "vite-tsconfig-paths": "^6.1.1",
     "whatwg-fetch": "^3.6.20",
     "yup": "^1.7.1",
     "zustand": "^4.5.7"
@@ -81,8 +81,8 @@
     "@types/styled-components": "^5.1.36",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "@vitejs/plugin-react-swc": "^3.11.0",
-    "dotenv": "^16.6.1",
+    "@vitejs/plugin-react-swc": "^4.3.3",
+    "dotenv": "^18.0.10",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -99,11 +99,11 @@
     "jest-sonar-reporter": "^2.0.0",
     "jest-styled-components": "^7.4.1",
     "prettier": "^3.10.1",
-    "rimraf": "^4.4.1",
+    "rimraf": "^6.1.4",
     "ts-node": "^10.9.2",
     "ts-prune": "^0.10.3",
     "typescript": "^6.0.3",
-    "vite-plugin-ejs": "^1.8.0"
+    "vite-plugin-ejs": "^2.0.0"
   },
   "engines": {
     "node": "v26.13.1",
