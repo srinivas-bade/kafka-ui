@@ -13,12 +13,11 @@ import { serdesPayload } from 'lib/fixtures/topicMessages';
 import Mock = jest.Mock;
 
 jest.mock('json-schema-faker', () => ({
-  generate: () => ({
+  generateSync: () => ({
     f1: -93251214,
     schema: 'enim sit in fugiat dolor',
     f2: 'deserunt culpa sunt',
   }),
-  option: jest.fn(),
 }));
 
 jest.mock('components/Topics/Topic/SendMessage/utils', () => ({

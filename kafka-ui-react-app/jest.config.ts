@@ -23,7 +23,8 @@ export default {
     '^.+\\.css$': '<rootDir>/.jest/cssTransform.js',
   },
   transformIgnorePatterns: [
-    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+    // ESM-only dependencies are transformed to CommonJS for Jest
+    '[/\\\\]node_modules[/\\\\](?!(\\.pnpm[/\\\\])?(pretty-ms|parse-ms|json-schema-faker)[@/\\\\]).+\\.(js|jsx|mjs|cjs|ts|tsx)$',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   modulePaths: ['<rootDir>/src'],
