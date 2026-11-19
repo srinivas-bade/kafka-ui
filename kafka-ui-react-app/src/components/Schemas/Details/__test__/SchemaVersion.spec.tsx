@@ -3,6 +3,7 @@ import SchemaVersion from 'components/Schemas/Details/SchemaVersion/SchemaVersio
 import { render } from 'lib/testHelpers';
 import { SchemaSubject } from 'generated-sources';
 import { Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 
 import { jsonSchema } from './fixtures';
 
@@ -11,7 +12,9 @@ const renderComponent = () => {
     original: jsonSchema,
   };
 
-  return render(<SchemaVersion row={row as Row<SchemaSubject>} />);
+  return render(
+    <SchemaVersion row={row as Row<TableFeatures, SchemaSubject>} />
+  );
 };
 
 describe('SchemaVersion', () => {

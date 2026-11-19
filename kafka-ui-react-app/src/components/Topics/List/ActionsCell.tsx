@@ -1,6 +1,7 @@
 import React from 'react';
 import { Action, CleanUpPolicy, Topic, ResourceType } from 'generated-sources';
 import { CellContext } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import ClusterContext from 'components/contexts/ClusterContext';
 import { ClusterNameRoute } from 'lib/paths';
 import useAppParams from 'lib/hooks/useAppParams';
@@ -12,7 +13,9 @@ import {
 } from 'lib/hooks/api/topics';
 import { ActionDropdownItem } from 'components/common/ActionComponent';
 
-const ActionsCell: React.FC<CellContext<Topic, unknown>> = ({ row }) => {
+const ActionsCell: React.FC<CellContext<TableFeatures, Topic, unknown>> = ({
+  row,
+}) => {
   const { name, internal, cleanUpPolicy } = row.original;
 
   const { isReadOnly, isTopicDeletionAllowed } =

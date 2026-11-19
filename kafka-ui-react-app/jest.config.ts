@@ -24,7 +24,7 @@ export default {
   },
   transformIgnorePatterns: [
     // ESM-only dependencies are transformed to CommonJS for Jest
-    '[/\\\\]node_modules[/\\\\](?!(\\.pnpm[/\\\\])?(pretty-ms|parse-ms|json-schema-faker)[@/\\\\]).+\\.(js|jsx|mjs|cjs|ts|tsx)$',
+    '[/\\\\]node_modules[/\\\\](?!(\\.pnpm[/\\\\])?(pretty-ms|parse-ms|json-schema-faker|@tanstack[+/\\\\](react-table|table-core))[@/\\\\]).+\\.(js|jsx|mjs|cjs|ts|tsx)$',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   modulePaths: ['<rootDir>/src'],

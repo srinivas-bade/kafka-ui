@@ -6,6 +6,7 @@ import Switch from 'components/common/Switch/Switch';
 import { useClusters } from 'lib/hooks/api/clusters';
 import { Cluster, ResourceType, ServerStatus } from 'generated-sources';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Table, { SizeCell } from 'components/common/NewTable';
 import useBoolean from 'lib/hooks/useBoolean';
 import { clusterNewConfigPath } from 'lib/paths';
@@ -35,8 +36,8 @@ const Dashboard: React.FC = () => {
     };
   }, [clusters, showOfflineOnly]);
 
-  const columns = React.useMemo<ColumnDef<Cluster>[]>(() => {
-    const initialColumns: ColumnDef<Cluster>[] = [
+  const columns = React.useMemo<ColumnDef<TableFeatures, Cluster>[]>(() => {
+    const initialColumns: ColumnDef<TableFeatures, Cluster>[] = [
       { header: 'Cluster name', accessorKey: 'name', cell: ClusterName },
       { header: 'Version', accessorKey: 'version' },
       { header: 'Brokers count', accessorKey: 'brokerCount' },

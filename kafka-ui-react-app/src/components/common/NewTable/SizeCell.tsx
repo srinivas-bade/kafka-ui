@@ -1,16 +1,23 @@
 import React from 'react';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, RowData } from '@tanstack/react-table';
 import BytesFormatted from 'components/common/BytesFormatted/BytesFormatted';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AsAny = any;
+import type { TableFeatures } from './features';
 
-const SizeCell: React.FC<
-  CellContext<AsAny, unknown> & { renderSegments?: boolean; precision?: number }
-> = ({ getValue, row, renderSegments = false, precision = 0 }) => (
+const SizeCell = <TData extends RowData>({
+  getValue,
+  row,
+  renderSegments = false,
+  precision = 0,
+}: CellContext<TableFeatures, TData, unknown> & {
+  renderSegments?: boolean;
+  precision?: number;
+}) => (
   <>
     <BytesFormatted value={getValue<string | number>()} precision={precision} />
-    {renderSegments ? `, ${row?.original.count} segment(s)` : null}
+    {renderSegments
+      ? `, ${'count' in row.original ? row.original.count : undefined} segment(s)`
+      : null}
   </>
 );
 

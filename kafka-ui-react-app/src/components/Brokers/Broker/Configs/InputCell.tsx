@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CellContext } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import CheckmarkIcon from 'components/common/Icons/CheckmarkIcon';
 import EditIcon from 'components/common/Icons/EditIcon';
 import CancelIcon from 'components/common/Icons/CancelIcon';
@@ -11,7 +12,11 @@ import { ActionButton } from 'components/common/ActionComponent';
 
 import * as S from './Configs.styled';
 
-interface InputCellProps extends CellContext<BrokerConfig, unknown> {
+interface InputCellProps extends CellContext<
+  TableFeatures,
+  BrokerConfig,
+  unknown
+> {
   onUpdate: (name: string, value?: string) => void;
 }
 

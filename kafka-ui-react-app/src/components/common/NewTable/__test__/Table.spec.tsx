@@ -9,6 +9,7 @@ import Table, {
 } from 'components/common/NewTable';
 import { screen, waitFor } from '@testing-library/dom';
 import { ColumnDef, Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import userEvent from '@testing-library/user-event';
 import { formatTimestamp } from 'lib/dateTimeHelpers';
 import { ConnectorState, ConsumerGroupState } from 'generated-sources';
@@ -64,7 +65,7 @@ const data = [
   },
 ];
 
-const columns: ColumnDef<Datum>[] = [
+const columns: ColumnDef<TableFeatures, Datum>[] = [
   {
     header: 'DateTime',
     accessorKey: 'timestamp',
@@ -313,7 +314,8 @@ describe('Table', () => {
   describe('Row Selecting', () => {
     beforeEach(() => {
       renderComponent({
-        enableRowSelection: (row: Row<Datum>) => row.original.selectable,
+        enableRowSelection: (row: Row<TableFeatures, Datum>) =>
+          row.original.selectable,
         batchActionsBar: () => <div>I am Action Bar</div>,
       });
     });

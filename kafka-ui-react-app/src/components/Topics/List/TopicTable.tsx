@@ -1,6 +1,7 @@
 import React from 'react';
 import { SortOrder, Topic, TopicColumnsToSort } from 'generated-sources';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Table, { SizeCell } from 'components/common/NewTable';
 import useAppParams from 'lib/hooks/useAppParams';
 import { ClusterName } from 'redux/interfaces';
@@ -32,7 +33,7 @@ const TopicTable: React.FC = () => {
   const topics = data?.topics || [];
   const pageCount = data?.pageCount || 0;
 
-  const columns = React.useMemo<ColumnDef<Topic>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, Topic>[]>(
     () => [
       {
         id: TopicColumnsToSort.NAME,

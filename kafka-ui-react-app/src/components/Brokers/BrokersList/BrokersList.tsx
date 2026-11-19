@@ -9,6 +9,7 @@ import { useClusterStats } from 'lib/hooks/api/clusters';
 import Table, { LinkCell, SizeCell } from 'components/common/NewTable';
 import CheckMarkRoundIcon from 'components/common/Icons/CheckMarkRoundIcon';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { clusterBrokerPath } from 'lib/paths';
 import Tooltip from 'components/common/Tooltip/Tooltip';
 import ColoredCell from 'components/common/NewTable/ColoredCell';
@@ -67,7 +68,9 @@ const BrokersList: React.FC = () => {
     });
   }, [diskUsage, brokers]);
 
-  const columns = React.useMemo<ColumnDef<(typeof rows)[number]>[]>(
+  const columns = React.useMemo<
+    ColumnDef<TableFeatures, (typeof rows)[number]>[]
+  >(
     () => [
       {
         header: 'Broker ID',

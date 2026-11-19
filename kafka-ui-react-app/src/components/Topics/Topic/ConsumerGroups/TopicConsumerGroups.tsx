@@ -4,6 +4,7 @@ import { ConsumerGroup } from 'generated-sources';
 import useAppParams from 'lib/hooks/useAppParams';
 import { useTopicConsumerGroups } from 'lib/hooks/api/topics';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Table, { LinkCell, TagCell } from 'components/common/NewTable';
 import Search from 'components/common/Search/Search';
 
@@ -26,7 +27,7 @@ const TopicConsumerGroups: React.FC = () => {
     [data, keyword]
   );
 
-  const columns = React.useMemo<ColumnDef<ConsumerGroup>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, ConsumerGroup>[]>(
     () => [
       {
         header: 'Consumer Group ID',

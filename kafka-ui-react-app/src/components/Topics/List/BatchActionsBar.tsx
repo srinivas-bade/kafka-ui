@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { Action, Topic, ResourceType } from 'generated-sources';
 import useAppParams from 'lib/hooks/useAppParams';
 import { ClusterName } from 'redux/interfaces';
@@ -16,7 +17,7 @@ import { isPermitted } from 'lib/permissions';
 import { useUserInfo } from 'lib/hooks/useUserInfo';
 
 interface BatchActionsbarProps {
-  rows: Row<Topic>[];
+  rows: Row<TableFeatures, Topic>[];
   resetRowSelection(): void;
 }
 

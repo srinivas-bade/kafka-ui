@@ -1,6 +1,7 @@
 import React from 'react';
 import { FullConnectorInfo } from 'generated-sources';
 import { CellContext } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { useNavigate } from 'react-router-dom';
 import { Tag } from 'components/common/Tag/Tag.styled';
 import { ClusterNameRoute, clusterTopicPath } from 'lib/paths';
@@ -8,9 +9,9 @@ import useAppParams from 'lib/hooks/useAppParams';
 
 import * as S from './List.styled';
 
-const TopicsCell: React.FC<CellContext<FullConnectorInfo, unknown>> = ({
-  row,
-}) => {
+const TopicsCell: React.FC<
+  CellContext<TableFeatures, FullConnectorInfo, unknown>
+> = ({ row }) => {
   const { topics } = row.original;
   const { clusterName } = useAppParams<ClusterNameRoute>();
   const navigate = useNavigate();

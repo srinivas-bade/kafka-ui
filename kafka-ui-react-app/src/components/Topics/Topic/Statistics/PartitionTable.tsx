@@ -1,12 +1,13 @@
 import React from 'react';
 import { TopicAnalysisStats } from 'generated-sources';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Table from 'components/common/NewTable';
 
 import PartitionInfoRow from './PartitionInfoRow';
 
 const PartitionTable: React.FC<{ data: TopicAnalysisStats[] }> = ({ data }) => {
-  const columns = React.useMemo<ColumnDef<TopicAnalysisStats>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, TopicAnalysisStats>[]>(
     () => [
       {
         header: 'Partition ID',

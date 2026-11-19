@@ -7,6 +7,7 @@ import {
   ResourceType,
 } from 'generated-sources';
 import { CellContext } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { ClusterNameRoute } from 'lib/paths';
 import useAppParams from 'lib/hooks/useAppParams';
 import { Dropdown, DropdownItem } from 'components/common/Dropdown';
@@ -18,9 +19,9 @@ import { useConfirm } from 'lib/hooks/useConfirm';
 import { useIsMutating } from '@tanstack/react-query';
 import { ActionDropdownItem } from 'components/common/ActionComponent';
 
-const ActionsCell: React.FC<CellContext<FullConnectorInfo, unknown>> = ({
-  row,
-}) => {
+const ActionsCell: React.FC<
+  CellContext<TableFeatures, FullConnectorInfo, unknown>
+> = ({ row }) => {
   const { connect, name, status } = row.original;
   const { clusterName } = useAppParams<ClusterNameRoute>();
   const mutationsNumber = useIsMutating();

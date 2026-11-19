@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { Cluster, ResourceType } from 'generated-sources';
 import { CellContext } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { clusterConfigPath } from 'lib/paths';
 import { useGetUserInfo } from 'lib/hooks/api/roles';
 import { ActionCanButton } from 'components/common/ActionComponent';
 
-type Props = CellContext<Cluster, unknown>;
+type Props = CellContext<TableFeatures, Cluster, unknown>;
 
 const ClusterTableActionsCell: React.FC<Props> = ({ row }) => {
   const { name } = row.original;

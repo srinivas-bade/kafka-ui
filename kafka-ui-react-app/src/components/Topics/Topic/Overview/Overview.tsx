@@ -8,6 +8,7 @@ import { RouteParamsClusterTopic } from 'lib/paths';
 import useAppParams from 'lib/hooks/useAppParams';
 import { useTopicDetails } from 'lib/hooks/api/topics';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 
 import * as S from './Overview.styled';
 import ActionsCell from './ActionsCell';
@@ -34,7 +35,7 @@ const Overview: React.FC = () => {
     });
   }, [data?.partitions]);
 
-  const columns = React.useMemo<ColumnDef<Partition>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, Partition>[]>(
     () => [
       {
         header: 'Partition ID',

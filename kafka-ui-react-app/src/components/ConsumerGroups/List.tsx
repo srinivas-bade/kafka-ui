@@ -11,6 +11,7 @@ import {
 import useAppParams from 'lib/hooks/useAppParams';
 import { clusterConsumerGroupDetailsPath, ClusterNameRoute } from 'lib/paths';
 import { ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Table, { LinkCell, TagCell } from 'components/common/NewTable';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CONSUMER_GROUP_STATE_TOOLTIPS, PER_PAGE } from 'lib/constants';
@@ -33,7 +34,9 @@ const List = () => {
     search: searchParams.get('q') || '',
   });
 
-  const columns = React.useMemo<ColumnDef<ConsumerGroupDetails>[]>(
+  const columns = React.useMemo<
+    ColumnDef<TableFeatures, ConsumerGroupDetails>[]
+  >(
     () => [
       {
         id: ConsumerGroupOrdering.NAME,

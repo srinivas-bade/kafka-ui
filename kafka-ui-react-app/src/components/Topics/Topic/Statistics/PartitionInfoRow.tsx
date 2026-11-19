@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import Heading from 'components/common/heading/Heading.styled';
 import BytesFormatted from 'components/common/BytesFormatted/BytesFormatted';
 import {
@@ -11,9 +12,9 @@ import { formatTimestamp } from 'lib/dateTimeHelpers';
 
 import * as S from './Statistics.styles';
 
-const PartitionInfoRow: React.FC<{ row: Row<TopicAnalysisStats> }> = ({
-  row,
-}) => {
+const PartitionInfoRow: React.FC<{
+  row: Row<TableFeatures, TopicAnalysisStats>;
+}> = ({ row }) => {
   const {
     totalMsgs,
     minTimestamp,

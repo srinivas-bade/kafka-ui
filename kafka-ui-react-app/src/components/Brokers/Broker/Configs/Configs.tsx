@@ -1,5 +1,6 @@
 import React from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { TableFeatures } from 'components/common/NewTable/features';
 import { ClusterBrokerParam } from 'lib/paths';
 import useAppParams from 'lib/hooks/useAppParams';
 import {
@@ -53,7 +54,9 @@ const Configs: React.FC = () => {
 
   const dataSource = React.useMemo(() => getData(), [data, keyword]);
 
-  const renderCell = (props: CellContext<BrokerConfig, unknown>) => (
+  const renderCell = (
+    props: CellContext<TableFeatures, BrokerConfig, unknown>
+  ) => (
     <InputCell
       {...props}
       onUpdate={(name, value) => {
@@ -67,7 +70,7 @@ const Configs: React.FC = () => {
     />
   );
 
-  const columns = React.useMemo<ColumnDef<BrokerConfig>[]>(
+  const columns = React.useMemo<ColumnDef<TableFeatures, BrokerConfig>[]>(
     () => [
       { header: 'Key', accessorKey: 'name' },
       {
