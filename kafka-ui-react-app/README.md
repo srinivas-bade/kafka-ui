@@ -12,7 +12,7 @@ UI for Apache Kafka management
 
 ## Requirements
 - [docker](https://www.docker.com/get-started) (required to run [Initialize application](#initialize-application))
-- [nvm](https://github.com/nvm-sh/nvm) with installed [Node.js](https://nodejs.org/en/) of expected version (check `.nvmrc`)
+- [nvm](https://github.com/nvm-sh/nvm) with installed [Node.js](https://nodejs.org/en/) of expected version (check `.nvmrc`, currently Node.js v26 LTS `v26.13.1`; verify with `node --version`)
 
 ## Getting started
 
