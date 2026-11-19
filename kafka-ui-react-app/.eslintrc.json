@@ -87,7 +87,28 @@
       }
     ],
     "react/jsx-no-constructed-context-values": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    // rules removed in @typescript-eslint v8 but still enabled by airbnb-typescript
+    "@typescript-eslint/lines-between-class-members": "off",
+    "lines-between-class-members": [
+      "error",
+      "always",
+      {
+        "exceptAfterSingleLine": false
+      }
+    ],
+    "@typescript-eslint/no-throw-literal": "off",
+    "@typescript-eslint/only-throw-error": "error",
+    // keep the pre-v8 default of not checking caught errors
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "caughtErrors": "none"
+      }
+    ]
   },
   "overrides": [
     {
