@@ -101,7 +101,7 @@ describe('AddFilter component', () => {
       await userEvent.paste(code);
       await userEvent.tab();
       expect(addFilterBtn).toBeEnabled();
-      expect(codeTextBox).toHaveValue(`${code}\n\n`);
+      expect(codeTextBox).toHaveValue(`${code} \n\n`);
     });
 
     it('calls editFilter when edit button is clicked in saved filters', async () => {
