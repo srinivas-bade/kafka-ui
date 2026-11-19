@@ -12,8 +12,9 @@ import {
 } from 'react-router-dom';
 import { FetchMock } from 'fetch-mock';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+import { StyleSheetManager, ThemeProvider } from 'styled-components';
 import { theme } from 'theme/theme';
+import { shouldForwardProp } from 'lib/styledComponents';
 import {
   render,
   renderHook,
@@ -138,20 +139,22 @@ const customRender = (
       <GlobalSettingsContext.Provider
         value={globalSettings || { hasDynamicConfig: false }}
       >
-        <ThemeProvider theme={theme}>
-          <TestUserInfoProvider data={userInfo}>
-            <ConfirmContextProvider>
-              <Provider store={store}>
-                <MemoryRouter initialEntries={initialEntries}>
-                  <div>
-                    {children}
-                    <ConfirmationModal />
-                  </div>
-                </MemoryRouter>
-              </Provider>
-            </ConfirmContextProvider>
-          </TestUserInfoProvider>
-        </ThemeProvider>
+        <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+          <ThemeProvider theme={theme}>
+            <TestUserInfoProvider data={userInfo}>
+              <ConfirmContextProvider>
+                <Provider store={store}>
+                  <MemoryRouter initialEntries={initialEntries}>
+                    <div>
+                      {children}
+                      <ConfirmationModal />
+                    </div>
+                  </MemoryRouter>
+                </Provider>
+              </ConfirmContextProvider>
+            </TestUserInfoProvider>
+          </ThemeProvider>
+        </StyleSheetManager>
       </GlobalSettingsContext.Provider>
     </TestQueryClientProvider>
   );
